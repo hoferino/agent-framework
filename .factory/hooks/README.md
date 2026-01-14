@@ -8,7 +8,16 @@ All hooks are **informational, not blocking**. They report issues but never prev
 
 ## Available Hooks
 
-### 1. `auto-format.sh`
+### 1. `session-start.sh`
+Runs at session start to provide quick orientation.
+
+**Shows:**
+- Current git branch and last commit message
+- Count of uncommitted files
+- Missing dependency warnings (node_modules, venv, go.sum)
+- Multi-service detection (checks subdirectories)
+
+### 2. `auto-format.sh`
 Automatically formats files after they are edited/created.
 
 **Supported formatters:**
@@ -16,7 +25,7 @@ Automatically formats files after they are edited/created.
 - Python: ruff or black
 - Go: gofmt
 
-### 2. `lint-on-edit.sh`
+### 3. `lint-on-edit.sh`
 Runs linting after files are edited. Reports issues but doesn't block.
 
 **Supported linters:**
@@ -24,14 +33,14 @@ Runs linting after files are edited. Reports issues but doesn't block.
 - Python: ruff, pylint, or flake8
 - Go: golangci-lint or go vet
 
-### 3. `typecheck-on-edit.sh`
+### 4. `typecheck-on-edit.sh`
 Runs type checking after files are edited. Reports errors but doesn't block.
 
 **Supported type checkers:**
 - TypeScript: tsc --noEmit
 - Python: mypy or pyright (if configured in pyproject.toml)
 
-### 4. `test-on-edit.sh`
+### 5. `test-on-edit.sh`
 Runs related tests after files are edited. Reports failures but doesn't block.
 
 **Supported test runners:**
@@ -39,7 +48,7 @@ Runs related tests after files are edited. Reports failures but doesn't block.
 - Python: pytest
 - Go: go test
 
-### 5. `notification.sh`
+### 6. `notification.sh`
 Sends desktop notifications when waiting for user input.
 
 **Supported platforms:**
@@ -58,6 +67,14 @@ These hooks detect which environment they're running in:
 ```json
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.factory/hooks/session-start.sh", "timeout": 5000 }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
